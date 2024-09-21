@@ -1,4 +1,6 @@
 package com.WebSocket.SpringBoot.Entity;
+
+
 public class ChatMessage {
     private String content; // The message content
     private String recipient; // The recipient's username

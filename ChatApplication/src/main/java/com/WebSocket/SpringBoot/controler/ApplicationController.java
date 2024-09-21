@@ -2,6 +2,7 @@ package com.WebSocket.SpringBoot.controler;
 
 
 import com.WebSocket.SpringBoot.Entity.ChatMessage;
+import com.WebSocket.SpringBoot.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -55,6 +56,8 @@ public String sendMessage(String message) {
         System.out.println(message.toString());
         messagingTemplate.convertAndSendToUser(message.getRecipient(), "/queue/messages", message);
     }
+
+
 }
 
 
