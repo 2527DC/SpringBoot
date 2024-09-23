@@ -10,6 +10,13 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+
+    private final UserTrackingService userTrackingService;
+
+    public WebSocketConfig(UserTrackingService userTrackingService) {
+        this.userTrackingService = userTrackingService;
+    }
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic", "/queue", "/user");
@@ -20,7 +27,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
                 .setAllowedOrigins("http://localhost:5173")
-                .withSockJS()
-                .setInterceptors(new CustomHandshakeInterceptor()); // Register the custom interceptor
-    }
-}
+                .addInterceptors(new CustomHandshakeInterceptor(userTrackingService))
+                .withSockJS();
+    }}
