@@ -11,12 +11,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final CustomChannelInterceptor customChannelInterceptor;
+
 
     private final UserTrackingService userTrackingService;
 
-    public WebSocketConfig(CustomChannelInterceptor customChannelInterceptor, UserTrackingService userTrackingService) {
-        this.customChannelInterceptor = customChannelInterceptor;
+    public WebSocketConfig(UserTrackingService userTrackingService) {
+
         this.userTrackingService = userTrackingService;
     }
 
@@ -38,9 +38,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 
 
-    @Override
-    public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(customChannelInterceptor);
-    }
 
 }

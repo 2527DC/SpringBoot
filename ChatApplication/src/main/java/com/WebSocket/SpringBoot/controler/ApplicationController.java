@@ -1,4 +1,4 @@
-package com.WebSocket.SpringBoot.controller;
+package com.WebSocket.SpringBoot.controler;
 
 import com.WebSocket.SpringBoot.Entity.ChatMessage;
 import com.WebSocket.SpringBoot.config.UserTrackingService;
@@ -8,7 +8,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -40,21 +40,14 @@ public class ApplicationController {
     }
 
     // Handle fetching online users and broadcast to all subscribers of /topic/onlineUsers
-    @MessageMapping("getOnlineUsers")
-    @SendTo("/topic/onlineUsers")
-    public Object[] getOnlineUsers() {
-        // Assuming the UserTrackingService has a method to fetch online users
-        return userTrackingService.getOnlineUsers().stream().toArray();
-    }
 
-    @MessageMapping("/{username}/remove")
-    public void removeUser(@PathVariable String username) {
+//    @MessageMapping("getOnlineUsers")
+//    @SendTo("/topic/onlineUsers")
+//    public Object[] getOnlineUsers() {
+//        // Assuming the UserTrackingService has a method to fetch online users
+//        return userTrackingService.getOnlineUsers().toArray();
+//
+//    }
+//
 
-        System.out.println(" removing  off the  user has been invoked ");
-        userTrackingService.removeUser(username);
-        System.out.println("User " + username + " has been removed from the online users.");
-
-        // Optionally broadcast the updated list of online users to all clients
-        simpMessagingTemplate.convertAndSend("/topic/onlineUsers",userTrackingService);
-    }
 }
