@@ -1,6 +1,7 @@
 package com.WebSocket.SpringBoot.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
@@ -10,12 +11,15 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    private final CustomChannelInterceptor customChannelInterceptor;
 
     private final UserTrackingService userTrackingService;
 
-    public WebSocketConfig(UserTrackingService userTrackingService) {
+    public WebSocketConfig(CustomChannelInterceptor customChannelInterceptor, UserTrackingService userTrackingService) {
+        this.customChannelInterceptor = customChannelInterceptor;
         this.userTrackingService = userTrackingService;
     }
+
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -27,6 +31,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws")
                 .setAllowedOrigins("http://localhost:5173")
-                .addInterceptors(new CustomHandshakeInterceptor(userTrackingService))
+//                .addInterceptors(new CustomHandshakeInterceptor(userTrackingService))
                 .withSockJS();
-    }}
+    }
+
+
+
+
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.interceptors(customChannelInterceptor);
+    }
+
+}
