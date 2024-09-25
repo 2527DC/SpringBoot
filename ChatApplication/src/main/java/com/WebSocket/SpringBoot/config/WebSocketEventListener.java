@@ -22,12 +22,12 @@ public class WebSocketEventListener {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @Autowired
-    private UserTrackingService userTrackingService;
 
 
     @EventListener
     public void handleWebSocketConnectListener(SessionConnectEvent event) {
+
+
         StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
 
         // Print the headers for debugging
@@ -38,35 +38,37 @@ public class WebSocketEventListener {
 
         String Status ="online";
 
-        UserService.insert(username,Status);
+
 
         System.out.println(username + " username in the session");
+        System.out.println(headerAccessor.getSessionId()+ " his sessionid ");
 
         if (username != null ) {
-            userTrackingService.addUser(headerAccessor.getSessionId(),username);
+            UserService.insert(username,Status,headerAccessor.getSessionId());
+
         } else {
             System.out.println("Username header not found in SessionConnectEvent");
         }
 
 
     }
-//    @EventListener
-//    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event ) {
-//        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
-//
-//        System.out.println( " disconnectin method invoked " + headerAccessor.getMessageHeaders());
-//
-//        String username = headerAccessor.getSessionId();
-//
-//        System.out.println(username);
-//        if (username != null) {
-//            userTrackingService.removeUser(username);
-//            System.out.println("User Disconnected: " + username);
-//
-//            // Broadcast the updated list of online users to everyone
-//            simpMessagingTemplate.convertAndSend("/topic/onlineUsers",userTrackingService.getOnlineUsers());
-//        }
-//    }
+    @EventListener
+    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event ) {
+        SimpMessageHeaderAccessor headerAccessor = SimpMessageHeaderAccessor.wrap(event.getMessage());
+
+        System.out.println( " disconnectin method invoked " + headerAccessor.getMessageHeaders());
+
+        String username = headerAccessor.getSessionId();
+
+        System.out.println(username);
+        if (username != null) {
+           UserService.remove(username);
+            System.out.println("User Disconnected: " + username);
+
+            // Broadcast the updated list of online users to everyone
+            simpMessagingTemplate.convertAndSend("/topic/onlineUsers",UserService.getUsers());
+        }
+    }
 
 
 }

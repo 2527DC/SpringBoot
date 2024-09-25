@@ -33,21 +33,12 @@ public class ApplicationController {
     }
 
     // Handle private messages
-    @MessageMapping("/send-private")
+    @MessageMapping("/private-message")
     public void sendPrivateMessage(@Payload ChatMessage message) {
+
+        System.out.println(" the private message method has be invoked ");
         System.out.println(message.toString());
         simpMessagingTemplate.convertAndSendToUser(message.getRecipient(), "/queue/messages", message);
     }
-
-    // Handle fetching online users and broadcast to all subscribers of /topic/onlineUsers
-
-//    @MessageMapping("getOnlineUsers")
-//    @SendTo("/topic/onlineUsers")
-//    public Object[] getOnlineUsers() {
-//        // Assuming the UserTrackingService has a method to fetch online users
-//        return userTrackingService.getOnlineUsers().toArray();
-//
-//    }
-//
 
 }

@@ -14,32 +14,42 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
 
-    @Autowired
-    private  Users us;
 
-    public Users insert( String username ,String status ){
 
+    public Users insert( String username ,String status ,String sessionid){
+
+        Users k=  new Users();
         String image=" src/assets/DSC00921.JPG";
-        Users k=us;
-        k.setUsername(username);
-        k.setImage(image);
-        k.setStatus(status);
+        Users  found = userRepo.findByUsername(username);
+        if(found!=null){
+
+            found.setSessionId(sessionid);
+            found.setStatus(status);
+            return  userRepo.save(found);
+        }
+        else {
+            k.setUsername(username);
+            k.setImage(image);
+            k.setStatus(status);
+            k.setSessionId(sessionid);
+        }
+
 
         return  userRepo.save(k);
     }
 
 
-//
-//    public String remove (String sessionid){
-//
-//
-//        System.out.println(" the remove method  is gettin invoked ");
-//        Users s= userRepo.findBySessionId(sessionid);
-//
-//        userRepo.delete(s);
-//
-//        return  s!=null ?"rmoved":" not removed ";
-//    }
+
+    public String remove (String sessionid){
+
+        System.out.println(" the remove method  is gettin invoked ");
+        Users s= userRepo.findBySessionId(sessionid);
+        if (s!=null){
+           s.setStatus("offline");
+           userRepo.save(s);
+        }
+        return  s!=null ?"rmoved":" not removed ";
+    }
 
 
     public List<Users> getUsers(){

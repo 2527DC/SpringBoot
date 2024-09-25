@@ -6,6 +6,16 @@ public class ChatMessage {
     private String recipient; // The recipient's username
     private String sender; // The sender's username (can be optional if derived from session)
 
+     private String timestamp;
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
     // Getters and setters
     public String getContent() {
         return content;

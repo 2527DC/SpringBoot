@@ -3,7 +3,7 @@ package com.WebSocket.SpringBoot.Entity;
 import jakarta.persistence.*;
 import org.springframework.stereotype.Component;
 
-@Component
+
 @Entity
 @Table(name = "users")
 public class Users{
@@ -12,22 +12,22 @@ public class Users{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Column(name = "username" ,nullable = false)
+    @Column(name = "username" ,nullable = false ,unique = true)
     private String username;
-//    @Column(name = "status",nullable = false)
+    @Column(name = "status",nullable = false)
     private String status;
-//    @Column(name = "image" ,nullable = false)
+    @Column(name = "image" ,nullable = false)
     private String image;
-//    @Column(name = "sessionId" ,nullable = false )
-//    private String  sessionId;
-//
-//    public String getSessionId() {
-//        return sessionId;
-//    }
-//
-//    public void setSessionId(String sessionId) {
-//        this.sessionId = sessionId;
-//    }
+    @Column(name = "sessionId" ,nullable = false ,unique = true)
+    private String  sessionId;
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
 
     // Default constructor (required by JPA)
     public Users() {
