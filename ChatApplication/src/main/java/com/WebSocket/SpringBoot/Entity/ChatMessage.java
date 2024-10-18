@@ -41,6 +41,7 @@ public class ChatMessage {
         this.sender = sender;
     }
 
+    
     @Override
     public String toString() {
         return "ChatMessage{" +
